@@ -1,0 +1,8 @@
+[submodule "backend"]
+	path = backend
+	url = git@github.com:leonard-pak/technopark-dbms-forum.git
+	branch = monitoring
+[submodule "database"]
+	path = database
+	url = git@github.com:leonard-pak/technopark-dbms-forum.git
+	branch = db
