@@ -25,6 +25,15 @@ services:
       - ./configs/prometheus.yml:/etc/prometheus/prometheus.yml:ro
     depends_on:
       - backend
+  grafana:
+    container_name: grafana
+    image: grafana/grafana-oss
+    ports:
+      - 3000:3000
+    volumes:
+      - ./configs/grafana:/var/lib/grafana:rw
+    depends_on:
+      - prometheus
   db:
     container_name: postgre-db
     image: postgres:alpine
@@ -40,6 +49,14 @@ services:
       timeout: 5s
       retries: 5
       start_period: 10s
+  db-exporter:
+    container_name: postgre-exporter
+    image: quay.io/prometheuscommunity/postgres-exporter
+    environment:
+      - DATA_SOURCE_NAME=postgresql://forum:forum@db:5432/forum?sslmode=disable
+    depends_on:
+      db:
+        condition: service_healthy
   backend:
     # image: jwilder/whoami
     build: ./backend
@@ -56,4 +73,4 @@ services:
       - POSTGRES_PORT=5432
       - SERVER_PORT=8000
     deploy:
-      replicas: 2
+      replicas: 3
