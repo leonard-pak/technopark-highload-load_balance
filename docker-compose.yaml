@@ -1,12 +1,28 @@
 version: "3.9"
+name: load-balance
 services:
+  balancer:
+    container_name: balancer
+    # build: ./balancer
+    # entrypoint: /var/balancer.bash
+    image: nginx
+    volumes:
+      # - ./configs/balancer.bash:/var/balancer.bash
+      - ./configs/nginx.conf:/etc/nginx/nginx.conf:ro
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    ports:
+      - 8080:80
+    depends_on:
+      - backend
   prometheus:
     container_name: prometheus
     image: prom/prometheus:latest
     ports:
       - 9090:9090
     volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./configs/prometheus.yml:/etc/prometheus/prometheus.yml:ro
     depends_on:
       - backend
   db:
@@ -19,18 +35,16 @@ services:
       - POSTGRES_USER=forum
       - POSTGRES_DB=forum
     healthcheck:
-      test: ["CMD", "pg_isready"]
-      interval: 1s
-      retries: 3
-      start_period: 30s
-      timeout: 10s
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
   backend:
-    container_name: backend
+    # image: jwilder/whoami
     build: ./backend
     volumes:
       - ./database/db/init-db.sql:/go/db/init-db.sql:ro
-    ports:
-     - 8080:8080
     depends_on:
       db:
         condition: service_healthy
@@ -40,4 +54,6 @@ services:
       - POSTGRES_DB=forum
       - POSTGRES_HOST=db
       - POSTGRES_PORT=5432
-      - SERVER_PORT=8080
+      - SERVER_PORT=8000
+    deploy:
+      replicas: 2
