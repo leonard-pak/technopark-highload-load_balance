@@ -6,3 +6,6 @@
 	path = database
 	url = git@github.com:leonard-pak/technopark-dbms-forum.git
 	branch = db
+[submodule "tests"]
+	path = tests
+	url = git@github.com:mailcourses/technopark-dbms-forum.git
