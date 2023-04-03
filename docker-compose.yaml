@@ -23,8 +23,6 @@ services:
       - 9090:9090
     volumes:
       - ./configs/prometheus.yml:/etc/prometheus/prometheus.yml:ro
-    depends_on:
-      - backend
   grafana:
     container_name: grafana
     image: grafana/grafana-oss
@@ -32,8 +30,6 @@ services:
       - 3000:3000
     volumes:
       - ./configs/grafana:/var/lib/grafana:rw
-    depends_on:
-      - prometheus
   db:
     container_name: postgre-db
     image: postgres:alpine
