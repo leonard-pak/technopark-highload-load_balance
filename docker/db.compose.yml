@@ -1,0 +1,26 @@
+version: "3.9"
+name: database
+services:
+  db:
+    container_name: postgre-db
+    image: postgres:alpine
+    volumes:
+      - ./../database/db/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+    environment:
+      - POSTGRES_PASSWORD=forum
+      - POSTGRES_USER=forum
+      - POSTGRES_DB=forum
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+  db-exporter:
+    container_name: postgre-exporter
+    image: quay.io/prometheuscommunity/postgres-exporter
+    environment:
+      - DATA_SOURCE_NAME=postgresql://forum:forum@db:5432/forum?sslmode=disable
+    depends_on:
+      db:
+        condition: service_healthy

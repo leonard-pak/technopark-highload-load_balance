@@ -1,8 +1,8 @@
 report.html
-# Output
 tech-db-forum*
 report*.html
 perf.data*
 technopark-dbms-forum
 /configs/grafana/**/*
 !/configs/grafana/grafana.db
+.vscode
