@@ -1,0 +1,24 @@
+version: "3.9"
+name: gateway
+services:
+  balancer:
+    container_name: balancer
+    build: ./../balancer
+    ports:
+      - 8080:80
+    depends_on:
+      - backend
+  prometheus:
+    container_name: prometheus
+    image: prom/prometheus:latest
+    ports:
+      - 9090:9090
+    volumes:
+      - ./../configs/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+  grafana:
+    container_name: grafana
+    image: grafana/grafana-oss
+    ports:
+      - 3000:3000
+    volumes:
+      - ./../configs/grafana:/var/lib/grafana:rw
