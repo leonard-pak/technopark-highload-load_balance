@@ -1,13 +1,11 @@
 version: "3.9"
 name: gateway
 services:
-  balancer:
-    container_name: balancer
-    build: ./../balancer
-    ports:
-      - 8080:80
-    depends_on:
-      - backend
+  # balancer:
+  #   container_name: balancer
+  #   build: ./../balancer
+  #   ports:
+  #     - 8080:80
   prometheus:
     container_name: prometheus
     image: prom/prometheus:latest
