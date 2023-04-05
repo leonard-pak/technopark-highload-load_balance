@@ -1,0 +1,16 @@
+version: "3.9"
+name: backend
+services:
+  api:
+    build: ./../backend
+    volumes:
+      - ./../database/db/init-db.sql:/go/db/init-db.sql:ro
+    environment:
+      - POSTGRES_PASSWORD=forum
+      - POSTGRES_USER=forum
+      - POSTGRES_DB=forum
+      - POSTGRES_HOST=10.0.0.24
+      - POSTGRES_PORT=5432
+      - SERVER_PORT=8000
+    ports:
+      - 8000:8000
