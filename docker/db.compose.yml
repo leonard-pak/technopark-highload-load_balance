@@ -16,6 +16,8 @@ services:
       timeout: 5s
       retries: 5
       start_period: 10s
+    ports:
+      - 5432:5432
   db-exporter:
     container_name: postgre-exporter
     image: quay.io/prometheuscommunity/postgres-exporter
@@ -24,3 +26,5 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    ports:
+      - 9187:9187
