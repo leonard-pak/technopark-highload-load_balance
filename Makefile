@@ -1,16 +1,16 @@
 COMPOSE=docker-compose.yaml
 
 all: $(COMPOSE) clear
-	docker-compose -f $(COMPOSE) up -d --build
+	docker compose -f $(COMPOSE) up -d --build
 
 stop: $(COMPOSE)
-	docker-compose -f $(COMPOSE) stop
+	docker compose -f $(COMPOSE) stop
 
 clear: $(COMPOSE)
-	docker-compose -f $(COMPOSE) rm -fsv
+	docker compose -f $(COMPOSE) rm -fsv
 
 run: $(COMPOSE)
-	docker-compose -f $(COMPOSE) up -d --build
+	docker compose -f $(COMPOSE) up -d --build
 
 tests/technopark-dbms-forum: tests/main.go
 	cd tests && go build
