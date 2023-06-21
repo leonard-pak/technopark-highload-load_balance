@@ -1,5 +1,5 @@
 COMPOSE=docker-compose.yaml
-HOST=localhost
+HOST=51.250.95.188
 
 all: $(COMPOSE) clear
 	docker compose -f $(COMPOSE) up -d --build

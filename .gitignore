@@ -6,3 +6,4 @@ technopark-dbms-forum
 /configs/grafana/**/*
 !/configs/grafana/grafana.db
 .vscode
+!technopark-dbms-forum
